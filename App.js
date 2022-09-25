@@ -10,10 +10,21 @@ import StartGameScreen from './screens/StartGameScreen';
 
 export default function App() {
   const [pickedNumber, setPickedNumber] = useState('');
+  const [screen, setScreen] = useState(<StartGameScreen onPickNumber={pickedNumberHandler} />);
+  
 
   function pickedNumberHandler(num) {
-    console.log(`Picked Number: ${num}`)
-    setPickedNumber(parseInt(num))
+    console.log(`CHOSEN: ${num}`)
+    setScreen(<GameScreen gameStatus={gameOver} chosen={num} />)
+  }
+
+  function gameOver(state) {
+    console.log(`GAME OVER: ${state}`, state)
+    if(state) {
+      setScreen(<GameOverScreen gameStatus={gameOver}></GameOverScreen>);
+    } else {
+      setScreen(<StartGameScreen onPickNumber={pickedNumberHandler} />)
+    }
   }
 
 
@@ -27,7 +38,7 @@ export default function App() {
           resizeMode='cover'
           source={require('./assets/background.png')}>
           <SafeAreaView style={styles.rootContainer}>
-            {pickedNumber === '' ? <StartGameScreen onPickNumber={pickedNumberHandler} /> : <GameScreen chosen={pickedNumber} />}
+            {screen}
           </SafeAreaView>
         </ImageBackground>
       </LinearGradient>

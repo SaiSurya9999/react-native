@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Alert, StyleSheet, Text, View } from "react-native";
 import PrimaryButton from "../components/PrimaryButton";
 import Title from "../components/Title";
@@ -8,8 +8,14 @@ let max = 100;
 
 export default function GameScreen(props) {
     const [data, setData] = useState({
-        guessedNumber: guess(1, 100, parseInt(props.chosen))
+        guessedNumber: guess(min, max, props.chosen)
     });
+
+    useEffect(() => {
+        if(data.guessedNumber === props.chosen) {
+            props.gameStatus(true);
+        }
+    }, [data]);
 
     function guess(min, max, exclude) {
         const output = Math.floor(Math.random() * (max - min)) + min;
@@ -21,13 +27,13 @@ export default function GameScreen(props) {
     }
 
     function guessNext(direction) {
-        console.log(parseInt(props.chosen))
+        
         if (
-            (direction === 'lower' && data.guessedNumber < parseInt(props.chosen)) ||
-            (direction === 'higher' && data.guessedNumber > parseInt(props.chosen))
+            (direction === 'lower' && data.guessedNumber < props.chosen) ||
+            (direction === 'higher' && data.guessedNumber > props.chosen)
         ) {
-            Alert.alert('Dont lie :)', 'You know that this is wrong!', 
-            [{ text: 'Sorry :)', style: 'cancel' }])
+            Alert.alert('Dont lie :)', 'You know that this is wrong!',
+                [{ text: 'Sorry :)', style: 'cancel' }])
             return;
         }
         if (direction === 'lower') {
@@ -46,7 +52,8 @@ export default function GameScreen(props) {
 
     return (
         <View style={styles.container}>
-            <Title>Opponent's guess: {data.guessedNumber} || {props.chosen}</Title>
+            <Title>Opponent's guess: {data.guessedNumber}</Title>
+            <Title>Chosen: {props.chosen}</Title>
             <Text>Higher or Lower ?</Text>
             <View style={styles.buttonHolder}>
                 <PrimaryButton onPress={guessNext.bind(this, 'higher')}>+</PrimaryButton>

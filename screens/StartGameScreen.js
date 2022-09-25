@@ -15,7 +15,6 @@ export default function StartGameScreen(props) {
     }
 
     function confirmInput() {
-        console.log(data.inputNumber)
         let chosenNumber = parseInt(data.inputNumber);
         if(isNaN(chosenNumber) || chosenNumber <= 0 || chosenNumber > 99) {
             Alert.alert('Invalid Number', 
@@ -23,7 +22,6 @@ export default function StartGameScreen(props) {
             [{ text: 'Okay', style: 'destructive', onPress: reset }]);
             return;
         } else {
-            console.log(chosenNumber)
             props.onPickNumber(chosenNumber);
         }
     }
@@ -39,7 +37,7 @@ export default function StartGameScreen(props) {
 
     return (
         <View style={styles.inputContainer}>
-            <TextInput value={data.inputNumber} onChange={textHandler} keyboardType="number-pad" autoCapitalize="none" autoCorrect={false} maxLength={2} style={styles.numberInput}></TextInput>
+            <TextInput value={data.inputNumber} onChangeText={textHandler} keyboardType="number-pad" autoCapitalize="none" autoCorrect={false} maxLength={2} style={styles.numberInput}></TextInput>
             <View style={styles.buttonHolder}>
                 <View style={{ flex: 1 }}>
                     <PrimaryButton onPress={reset}>Reset</PrimaryButton>
