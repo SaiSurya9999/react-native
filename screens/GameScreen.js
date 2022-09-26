@@ -7,15 +7,21 @@ let min = 1;
 let max = 100;
 
 export default function GameScreen(props) {
+    // if (props.init) {
+    //     props.init = false;
+    //     min = 1;
+    //     max = 100;
+    // }
+    console.log(`MIN: ${min} || MAX: ${max}`);
     const [data, setData] = useState({
-        guessedNumber: guess(min, max, props.chosen)
+        guessedNumber: guess(1, 100, props.chosen)
     });
 
     useEffect(() => {
-        if(data.guessedNumber === props.chosen) {
+        if (data.guessedNumber === props.chosen) {
             props.gameStatus(true);
         }
-    }, [data]);
+    }, [data, props.chosen, props.gameStatus]);
 
     function guess(min, max, exclude) {
         const output = Math.floor(Math.random() * (max - min)) + min;
@@ -27,7 +33,7 @@ export default function GameScreen(props) {
     }
 
     function guessNext(direction) {
-        
+
         if (
             (direction === 'lower' && data.guessedNumber < props.chosen) ||
             (direction === 'higher' && data.guessedNumber > props.chosen)
